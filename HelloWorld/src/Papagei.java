@@ -1,6 +1,7 @@
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Papagei extends Tier implements LineListener {
 
@@ -9,7 +10,7 @@ public class Papagei extends Tier implements LineListener {
 
     public void sing() {
 
-        File audioFile = new File("Badnerlied.wav");
+        File audioFile = new File("Adele.wav");
         try {
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             AudioFormat format = audioStream.getFormat();
@@ -18,14 +19,24 @@ public class Papagei extends Tier implements LineListener {
             audioClip.open(audioStream);
             audioClip.start();
 
+
             while (!playCompleted) {
                 // wait for the playback completes
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+                System.out.println("Type 'Stop' to stop the music!");
+                Scanner input = new Scanner(System.in);
+                String t = input.nextLine();
+                if (t.equalsIgnoreCase("stop")) {
+                    playCompleted = true;
+                } else {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 }
+
             }
+
             audioClip.close();
         } catch (UnsupportedAudioFileException ex) {
             System.out.println("The specified audio file is not supported.");
